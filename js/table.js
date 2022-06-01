@@ -1,130 +1,113 @@
-import {sorted} from './db/data.js';
-import { sortedTableByAgeMax, sortedTableByAgeMin } from './helpers/sortTableAge.js';
+import {
+  sortedTableByAgeMax,
+  sortedTableByAgeMin,
+} from "./helpers/sortTableAge.js";
 
-import { sortedTableByNameAz, sortedTableByNameZa } from './helpers/sortTableName.js';
-import { sortedTableByLastNameAz, sortedTableByLastNameZa } from './helpers/sortTableLastName.js';
+import {
+  sortedTableByNameAz,
+  sortedTableByNameZa,
+} from "./helpers/sortTableName.js";
+import {
+  sortedTableByLastNameAz,
+  sortedTableByLastNameZa,
+} from "./helpers/sortTableLastName.js";
 
+const dataLocal = localStorage.getItem("data");
+let sort = JSON.parse(dataLocal);
+const listData = sort;
 
-
-const listData = sorted;
-console.log(listData);
-
-const titulos = [{
-    nombre:'Nombre',
+const titulos = [
+  {
+    nombre: "Nombre",
     btn: sortedTableByNameAz,
     btnDown: sortedTableByNameZa,
-},{
-    nombre:'Apellido',
+    simbol: "A-Z",
+    simbol2: "Z-A",
+  },
+  {
+    nombre: "Apellido",
     btn: sortedTableByLastNameAz,
     btnDown: sortedTableByLastNameZa,
+    simbol: "A-Z",
+    simbol2: "Z-A",
+  },
+  {
+    nombre: "Edad",
+    btn: sortedTableByAgeMin,
+    btnDown: sortedTableByAgeMax,
+    simbol: "&#9757",
+    simbol2: "&#9759",
+  },
+  { nombre: "Email" },
+  { nombre: "Telefono", btn: "", btnDown: "" },
+];
 
+export const table = () => {
+  const container = document.querySelector("#container");
+  container.classList.add("container", "d-flex", "flex-column");
 
-},
-{nombre:'Edad',
-btn: sortedTableByAgeMin,
-btnDown: sortedTableByAgeMax},
-{nombre:'Email',
-},
-{nombre:'Telefono',
-btn: "",
-btnDown: ""} ]
+  const titleH1 = document.createElement("h3");
+  titleH1.textContent = "SofkaU-C3-Training desarrollo-JavasCript";
+  titleH1.classList.add("h3", "text-center", "font-monospace", "text-primary");
 
+  const tableContainer = document.createElement("div");
+  tableContainer.classList.add("table-responsive");
+  const tableFull = document.createElement("table");
+  tableFull.classList.add(
+    "table",
+    "table-info",
+    "table-striped",
 
-export const table = ()=>{
-  
-    const container = document.querySelector('#container');
-    container.classList.add( 'container', 'd-flex', 'flex-column');
+    "mt-1"
+  );
+  const tableHead = document.createElement("thead");
 
-    const titleH1 = document.createElement('h1');
-    titleH1.textContent = 'SofkaU-C3-Training desarrollo-JavasCript';
-    titleH1.classList.add( 'h1', 'text-center', 'font-monospace', 'text-primary');
+  const tableRowTitle = document.createElement("tr");
 
-    const tableContainer = document.createElement('table');
-    tableContainer.classList.add('table', 'table-info' ,'table-striped', 'mt-5');
-    const tableHead = document.createElement('thead');
+  const tableBody = document.createElement("tbody");
 
-    const tableRowTitle = document.createElement('tr');
-    
+  titulos.forEach((titulo) => {
+    let th = document.createElement("th");
 
-    const tableBody = document.createElement('tbody')
+    let btn = document.createElement("button");
+    btn.classList.add("btn", "ms-4");
+    btn.innerHTML = titulo.simbol;
+    btn.onclick = titulo.btn;
+    !titulo.btn ? btn.classList.add("d-none") : "";
+    let btnDown = document.createElement("button");
+    btnDown.classList.add("btn", "ms-2");
+    btnDown.innerHTML = titulo.simbol2;
+    btnDown.onclick = titulo.btnDown;
+    !titulo.btnDown ? btnDown.classList.add("d-none") : "";
 
-    titulos.forEach(titulo =>{
-        let th = document.createElement('th');
-        let btn = document.createElement('button');
-        btn.classList.add('btn', 'btn-succes-sm');
-        btn.innerHTML = '&#9650';
-        btn.onclick = titulo.btn;
-        !titulo.btn? btn.classList.add('d-none') : '';
-        let btnDown = document.createElement('button');
-        btnDown.classList.add('btn', 'btn-succes-sm');
-        btnDown.innerHTML = '&#9660';
-        btnDown.onclick = titulo.btnDown;
-        !titulo.btnDown? btnDown.classList.add('d-none') : '';
+    th.textContent = titulo.nombre;
+    th.append(btn, btnDown);
+    tableRowTitle.appendChild(th);
+  });
 
-        
-        
-        th.textContent = titulo.nombre;
-        th.append(btn, btnDown);
-        tableRowTitle.appendChild(th);
+  listData.forEach((list) => {
+    let row = document.createElement("tr");
 
-    })
+    let tdName = document.createElement("td");
+    let tdLastName = document.createElement("td");
+    let tdAge = document.createElement("td");
+    let tdMail = document.createElement("td");
+    let tdPhoneNumber = document.createElement("td");
 
-    
+    tdName.textContent = list.nombre;
+    tdLastName.textContent = list.apellidos;
+    tdAge.textContent = list.edad;
+    tdMail.textContent = list.email;
+    tdPhoneNumber.textContent = list.telefono;
 
-    listData.forEach(list =>{
-        let row = document.createElement('tr');
-        
-        let tdName = document.createElement('td');
-        let tdLastName = document.createElement('td');
-        let tdAge = document.createElement('td');
-        let tdMail = document.createElement('td');
-        let tdPhoneNumber = document.createElement('td');
-        
-        tdName.textContent = list.nombre;
-        tdLastName.textContent = list.apellidos;
-        tdAge.textContent = list.edad;
-        tdMail.textContent = list.email;
-        tdPhoneNumber.textContent = list.telefono;
-        
-        row.append(tdName, tdLastName, tdAge, tdMail, tdPhoneNumber);
+    row.append(tdName, tdLastName, tdAge, tdMail, tdPhoneNumber);
 
-        tableBody.appendChild(row)
+    tableBody.appendChild(row);
+  });
 
-    });
-     
-    tableHead.appendChild(tableRowTitle);
+  tableHead.appendChild(tableRowTitle);
 
-    tableContainer.append( tableHead , tableBody);
-    container.append(titleH1, tableContainer);
-
-   
-
-  
-
-
-   
-    
-   
-
-    
-  
-   
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
+  tableFull.append(tableHead, tableBody);
+  tableContainer.append(tableFull);
+  container.append(titleH1, tableContainer);
+};

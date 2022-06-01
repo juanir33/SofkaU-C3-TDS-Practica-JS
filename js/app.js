@@ -1,23 +1,9 @@
-import {table}  from './table.js';
-import { sortedTableByNameAz, sortedTableByNameZa} from './helpers/sortTableName.js';
-import { sortedTableByLastNameAz, sortedTableByLastNameZa} from './helpers/sortTableLastName.js'
-import {data} from './db/data.js';
-import { sortedTableByAgeMax, sortedTableByAgeMin } from './helpers/sortTableAge.js';
+import { table } from "./table.js";
 
+import { createData } from "./db/data.js";
 
-    table();
-    
-    
-   
-    //sortedTableByNameAz(data);
-    //sortedTableByNameZa(data)
-
-    //sortedTableByLastNameAz(data);
-    //sortedTableByLastNameZa(data);
-    sortedTableByAgeMax(data);
-    //sortedTableByAgeMin(data);
-
-    
-    
-
-
+export const init = () => {
+  createData();
+  table();
+};
+init();
